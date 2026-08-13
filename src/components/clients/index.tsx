@@ -20,7 +20,7 @@ import { useClients } from '@hooks/use-clients'
 import { ClientsSkeleton } from './skeleton'
 
 export function Clients() {
-  const { data: clients = [], isLoading } = useClients()
+  const { data, isLoading } = useClients()
 
   return (
     <div className="container mx-auto space-y-10 p-10">
@@ -42,7 +42,7 @@ export function Clients() {
         </TableHeader>
         <TableBody>
           {!isLoading &&
-            clients?.map(
+            data?.data?.map(
               ({
                 avatar,
                 createdAt,
