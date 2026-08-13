@@ -1,7 +1,11 @@
+import { Clients } from '@components/clients/index'
+import { queryClient } from '@lib/query-client'
+import { QueryClientProvider } from '@tanstack/react-query'
+
 export function App() {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <h1>Hello, World!</h1>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Clients />
+    </QueryClientProvider>
   )
 }
