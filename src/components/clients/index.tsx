@@ -74,7 +74,7 @@ export function Clients() {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={pagination.handlePreviousPage}
+              onClick={pagination.previousPage}
               disabled={!pagination.hasPreviousPage}
             />
           </PaginationItem>
@@ -85,7 +85,7 @@ export function Clients() {
           ).map((index: number) => (
             <PaginationItem
               key={index}
-              onClick={() => pagination.handleSetPage(index + 1)}
+              onClick={() => pagination.setPage(index + 1)}
             >
               <PaginationLink isActive={pagination.currentPage === index + 1}>
                 {index + 1}
@@ -95,7 +95,7 @@ export function Clients() {
 
           <PaginationItem>
             <PaginationNext
-              onClick={pagination.handleNextPage}
+              onClick={pagination.nextPage}
               disabled={!pagination.hasNextPage}
             />
           </PaginationItem>
