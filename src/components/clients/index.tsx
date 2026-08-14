@@ -20,7 +20,7 @@ import { useClients } from '@hooks/use-clients'
 import { ClientsSkeleton } from './skeleton'
 
 export function Clients() {
-  const { data, isLoading } = useClients()
+  const { clients, isLoading, pagination } = useClients()
 
   return (
     <div className="container mx-auto space-y-10 p-10">
@@ -28,7 +28,7 @@ export function Clients() {
         <h1 className="font-bold text-4xl">Clientes</h1>
       </header>
 
-      {isLoading && <ClientsSkeleton />}
+      {isLoading && <ClientsSkeleton perPage={pagination.perPage} />}
 
       <Table>
         <TableHeader>
@@ -42,7 +42,7 @@ export function Clients() {
         </TableHeader>
         <TableBody>
           {!isLoading &&
-            data?.data?.map(
+            clients?.map(
               ({
                 avatar,
                 createdAt,
@@ -81,19 +81,33 @@ export function Clients() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious />
+                <PaginationPrevious
+                  onClick={pagination.handlePreviousPage}
+                  disabled={!pagination.hasPreviousPage}
+                />
               </PaginationItem>
 
-              <PaginationItem>
-                <PaginationLink isActive>1</PaginationLink>
-              </PaginationItem>
+              {Array.from(
+                { length: pagination.totalPages },
+                (_, index: number) => index,
+              ).map((index: number) => (
+                <PaginationItem
+                  key={index}
+                  onClick={() => pagination.handleSetPage(index + 1)}
+                >
+                  <PaginationLink
+                    isActive={pagination.currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
 
               <PaginationItem>
-                <PaginationLink>2</PaginationLink>
-              </PaginationItem>
-
-              <PaginationItem>
-                <PaginationNext />
+                <PaginationNext
+                  onClick={pagination.handleNextPage}
+                  disabled={!pagination.hasNextPage}
+                />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
