@@ -10,7 +10,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -30,89 +29,78 @@ export function Clients() {
 
       {isLoading && <ClientsSkeleton perPage={pagination.perPage} />}
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Usuário</TableHead>
-            <TableHead>Data de entrada</TableHead>
-            <TableHead>Tipo de veículo</TableHead>
-            <TableHead>Marca</TableHead>
-            <TableHead>Modelo</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {!isLoading &&
-            clients?.map(
-              ({
-                avatar,
-                createdAt,
-                email,
-                id,
-                name,
-                vehicleManufacturer,
-                vehicleModel,
-                vehicleType,
-              }) => (
-                <TableRow key={id}>
-                  <TableCell className="flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src={avatar} className="size-10" />
-                      <AvatarFallback>{name.split('')[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <strong>{name}</strong>
-                      <small className="block text-muted-foreground">
-                        {email}
-                      </small>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {Intl.DateTimeFormat('pt-BR').format(new Date(createdAt))}
-                  </TableCell>
-                  <TableCell>{vehicleType}</TableCell>
-                  <TableCell>{vehicleManufacturer}</TableCell>
-                  <TableCell>{vehicleModel}</TableCell>
-                </TableRow>
-              ),
-            )}
-        </TableBody>
+      {!isLoading && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Usuário</TableHead>
+              <TableHead>Data de entrada</TableHead>
+              <TableHead>Tipo de veículo</TableHead>
+              <TableHead>Marca</TableHead>
+              <TableHead>Modelo</TableHead>
+            </TableRow>
+          </TableHeader>
 
-        <TableCaption>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={pagination.handlePreviousPage}
-                  disabled={!pagination.hasPreviousPage}
-                />
-              </PaginationItem>
+          <TableBody>
+            {clients?.map((client) => (
+              <TableRow key={client.id}>
+                <TableCell className="flex items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src={client.avatar} className="size-10" />
+                    <AvatarFallback>{client.name.split('')[0]}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <strong>{client.name}</strong>
+                    <small className="block text-muted-foreground">
+                      {client.email}
+                    </small>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {Intl.DateTimeFormat('pt-BR').format(
+                    new Date(client.createdAt),
+                  )}
+                </TableCell>
+                <TableCell>{client.vehicleType}</TableCell>
+                <TableCell>{client.vehicleManufacturer}</TableCell>
+                <TableCell>{client.vehicleModel}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
-              {Array.from(
-                { length: pagination.totalPages },
-                (_, index: number) => index,
-              ).map((index: number) => (
-                <PaginationItem
-                  key={index}
-                  onClick={() => pagination.handleSetPage(index + 1)}
-                >
-                  <PaginationLink
-                    isActive={pagination.currentPage === index + 1}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={pagination.handlePreviousPage}
+              disabled={!pagination.hasPreviousPage}
+            />
+          </PaginationItem>
 
-              <PaginationItem>
-                <PaginationNext
-                  onClick={pagination.handleNextPage}
-                  disabled={!pagination.hasNextPage}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </TableCaption>
-      </Table>
+          {Array.from(
+            { length: pagination.totalPages },
+            (_, index: number) => index,
+          ).map((index: number) => (
+            <PaginationItem
+              key={index}
+              onClick={() => pagination.handleSetPage(index + 1)}
+            >
+              <PaginationLink isActive={pagination.currentPage === index + 1}>
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          <PaginationItem>
+            <PaginationNext
+              onClick={pagination.handleNextPage}
+              disabled={!pagination.hasNextPage}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   )
 }
