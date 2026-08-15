@@ -86,10 +86,10 @@ export function Clients() {
             />
           </PaginationItem>
 
-          {pages.map((page) => {
-            if (page === '...') {
+          {pages.map((page, index) => {
+            if (page === 'ELLIPSIS') {
               return (
-                <PaginationItem key={page}>
+                <PaginationItem key={`ellipsis-${index}`}>
                   <PaginationLink isActive={false}>
                     <PaginationEllipsis />
                   </PaginationLink>

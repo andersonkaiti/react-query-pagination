@@ -15,7 +15,7 @@ export function generateEllipsisPagination(
       index === currentPage + surroundingPages + 1
 
     if (isEllipsisPosition && !isFirstPage && !isLastPage) {
-      pages.push('...')
+      pages.push('ELLIPSIS')
       continue
     }
 
