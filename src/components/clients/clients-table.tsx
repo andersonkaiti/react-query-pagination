@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -11,9 +12,10 @@ import {
 
 interface IClientsTableProps {
   clients: IClient[]
+  tableCaptionRef: React.RefObject<HTMLTableCaptionElement | null>
 }
 
-export function ClientsTable({ clients }: IClientsTableProps) {
+export function ClientsTable({ clients, tableCaptionRef }: IClientsTableProps) {
   return (
     <Table>
       <TableHeader>
@@ -50,6 +52,10 @@ export function ClientsTable({ clients }: IClientsTableProps) {
           </TableRow>
         ))}
       </TableBody>
+
+      <TableCaption ref={tableCaptionRef}>
+        <div className="size-10 bg-red-500" />
+      </TableCaption>
     </Table>
   )
 }
