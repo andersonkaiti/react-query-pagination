@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -16,10 +17,16 @@ import {
   TableRow,
 } from '@components/ui/table'
 import { useClients } from '@hooks/use-clients'
+import { generateEllipsisPagination } from '@lib/generate-ellipsis-pagination'
 import { ClientsSkeleton } from './skeleton'
 
 export function Clients() {
-  const { clients, isLoading, pagination } = useClients()
+  const { clients, isLoading, pagination } = useClients(1)
+
+  const pages = generateEllipsisPagination(
+    pagination.currentPage,
+    pagination.totalPages,
+  )
 
   return (
     <div className="container mx-auto space-y-10 p-10">
@@ -79,19 +86,30 @@ export function Clients() {
             />
           </PaginationItem>
 
-          {Array.from(
-            { length: pagination.totalPages },
-            (_, index: number) => index,
-          ).map((index: number) => (
-            <PaginationItem
-              key={index}
-              onClick={() => pagination.setPage(index + 1)}
-            >
-              <PaginationLink isActive={pagination.currentPage === index + 1}>
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {pages.map((page) => {
+            if (page === '...') {
+              return (
+                <PaginationItem key={page}>
+                  <PaginationLink isActive={false}>
+                    <PaginationEllipsis />
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            }
+
+            return (
+              <PaginationItem
+                key={page}
+                onClick={() => pagination.setPage(Number(page))}
+              >
+                <PaginationLink
+                  isActive={pagination.currentPage === Number(page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          })}
 
           <PaginationItem>
             <PaginationNext
