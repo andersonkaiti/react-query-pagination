@@ -9,13 +9,21 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
+import { Loader2 } from 'lucide-react'
 
 interface IClientsTableProps {
   clients: IClient[]
   tableCaptionRef: React.RefObject<HTMLTableCaptionElement | null>
+  hasNextPage: boolean
+  isFetchingNextPage: boolean
 }
 
-export function ClientsTable({ clients, tableCaptionRef }: IClientsTableProps) {
+export function ClientsTable({
+  clients,
+  tableCaptionRef,
+  hasNextPage,
+  isFetchingNextPage,
+}: IClientsTableProps) {
   return (
     <Table>
       <TableHeader>
@@ -53,8 +61,19 @@ export function ClientsTable({ clients, tableCaptionRef }: IClientsTableProps) {
         ))}
       </TableBody>
 
-      <TableCaption ref={tableCaptionRef}>
-        <div className="size-10 bg-red-500" />
+      <TableCaption ref={tableCaptionRef} className="pb-4">
+        {isFetchingNextPage && (
+          <span className="flex items-center justify-center gap-2 text-muted-foreground">
+            Carregando mais dados...
+            <Loader2 className="size-4 animate-spin" />
+          </span>
+        )}
+
+        {!isFetchingNextPage && !hasNextPage && (
+          <span className="text-center text-muted-foreground">
+            Você chegou ao fim!
+          </span>
+        )}
       </TableCaption>
     </Table>
   )

@@ -3,8 +3,11 @@ import { useEffect, useRef } from 'react'
 import { ClientsTable } from './clients-table'
 import { ClientsSkeleton } from './skeleton'
 
+const PER_PAGE = 20
+
 export function Clients() {
-  const { clients, fetchNextPage, hasNextPage, isLoading } = useClients()
+  const { clients, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+    useClients(PER_PAGE)
 
   const tableCaptionRef = useRef<null | HTMLTableCaptionElement>(null)
 
@@ -39,10 +42,15 @@ export function Clients() {
         <h1 className="font-bold text-4xl">Clientes</h1>
       </header>
 
-      {isLoading && <ClientsSkeleton />}
+      {isLoading && <ClientsSkeleton perPage={PER_PAGE} />}
 
       {!isLoading && (
-        <ClientsTable clients={clients} tableCaptionRef={tableCaptionRef} />
+        <ClientsTable
+          clients={clients}
+          tableCaptionRef={tableCaptionRef}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       )}
     </div>
   )
