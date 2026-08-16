@@ -25,7 +25,7 @@ export function Clients() {
           return
         }
 
-        if (isIntersecting && hasNextPage) {
+        if (isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage()
         }
       },
@@ -39,7 +39,7 @@ export function Clients() {
     return () => {
       observer.disconnect()
     }
-  }, [isLoading, fetchNextPage, hasNextPage])
+  }, [isLoading, fetchNextPage, hasNextPage, isFetchingNextPage])
 
   return (
     <div className="container mx-auto space-y-10 p-10">
