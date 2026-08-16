@@ -16,18 +16,23 @@ export function Clients() {
       return
     }
 
-    const observer = new IntersectionObserver((entries, internalObserver) => {
-      const { isIntersecting } = entries[0]
+    const observer = new IntersectionObserver(
+      (entries, internalObserver) => {
+        const { isIntersecting } = entries[0]
 
-      if (!hasNextPage) {
-        internalObserver.disconnect()
-        return
-      }
+        if (!hasNextPage) {
+          internalObserver.disconnect()
+          return
+        }
 
-      if (isIntersecting && hasNextPage) {
-        fetchNextPage()
-      }
-    })
+        if (isIntersecting && hasNextPage) {
+          fetchNextPage()
+        }
+      },
+      {
+        rootMargin: '20%',
+      },
+    )
 
     observer.observe(tableCaptionRef.current)
 
