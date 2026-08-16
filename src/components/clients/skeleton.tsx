@@ -1,7 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton'
 
 interface IClientsSkeletonProps {
-  perPage: number
+  perPage?: number
 }
 
 export function ClientsSkeleton({ perPage = 10 }: IClientsSkeletonProps) {
