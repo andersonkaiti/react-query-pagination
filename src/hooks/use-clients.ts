@@ -6,8 +6,12 @@ export function useClients(perPage = 20) {
     queryKey: ['clients'],
     initialPageParam: 1,
     queryFn: ({ pageParam }) => getClients(pageParam, perPage),
-    getNextPageParam: (_lastPage, _allPages, lastPageParam) =>
-      lastPageParam + 1,
+    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      const totalPages = Math.ceil(lastPage.items / perPage)
+      const isLastPage = allPages.length >= totalPages
+
+      return isLastPage ? null : lastPageParam + 1
+    },
   })
 
   return {

@@ -4,7 +4,7 @@ import { ClientsTable } from './clients-table'
 import { ClientsSkeleton } from './skeleton'
 
 export function Clients() {
-  const { clients, fetchNextPage, isLoading } = useClients()
+  const { clients, fetchNextPage, hasNextPage, isLoading } = useClients()
 
   const tableCaptionRef = useRef<null | HTMLTableCaptionElement>(null)
 
@@ -13,10 +13,15 @@ export function Clients() {
       return
     }
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries, internalObserver) => {
       const { isIntersecting } = entries[0]
 
-      if (isIntersecting) {
+      if (!hasNextPage) {
+        internalObserver.disconnect()
+        return
+      }
+
+      if (isIntersecting && hasNextPage) {
         fetchNextPage()
       }
     })
@@ -26,7 +31,7 @@ export function Clients() {
     return () => {
       observer.disconnect()
     }
-  }, [isLoading, fetchNextPage])
+  }, [isLoading, fetchNextPage, hasNextPage])
 
   return (
     <div className="container mx-auto space-y-10 p-10">
